@@ -10,13 +10,10 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-      - name: Build APK
-        run: |
-          echo "sdk.dir=$ANDROID_HOME" > local.properties
-          chmod +x gradlew
-         ./gradlew :app:assembleDebug --no-daemon
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+      - name: Build Debug APK
+        run:./gradlew :app:assembleDebug --no-daemon
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
