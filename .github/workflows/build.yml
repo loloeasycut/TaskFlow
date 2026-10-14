@@ -14,10 +14,12 @@ jobs:
           distribution: 'temurin'
 
       - name: Make gradlew executable
-        run: chmod +x ./gradlew
+        run: chmod +x./gradlew
 
       - name: Build Debug APK
-        run: ./gradlew :app:assembleDebug --no-daemon
+        run: ./gradlew :app:assembleDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxMetaspaceSize=512m"
+        env:
+          GRADLE_OPTS: "-Xmx2048m"
 
       - name: Upload APK
         if: success()
