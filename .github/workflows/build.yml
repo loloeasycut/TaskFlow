@@ -3,6 +3,7 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 17
@@ -10,11 +11,14 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
       - name: Make gradlew executable
-        run: chmod +x gradlew
+        run: chmod +x./gradlew
       - name: Build Debug APK
         run: ./gradlew :app:assembleDebug --no-daemon
       - name: Upload APK
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: TaskFlow-APK
